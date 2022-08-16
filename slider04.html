@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider 04</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap');
+
+        :root {
+            --primaryColor: #FFFFFF;
+            --secondaryColor: rgba(255, 255, 255, 70%);
+            --sliderFont: "Montserrat"
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .s04_universal * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--sliderFont);
+        }
+
+        .s04_container {
+            max-width: 1340px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .s04_slider_main_section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .s04_slider_inner_item {
+            position: relative;
+            min-width: 100%;
+        }
+
+        .s04_slider_main_wrapper {
+            display: flex;
+        }
+
+        .s04_active_change_slide .s04_slider_main_wrapper {
+            transform: translateX(-100%);
+            transition: all .5s ease-in-out;
+        }
+
+        .s04_active_change_slide {
+            transform: translateX(-100%);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .s04_slider_img_wrapper img {
+            height: 170px;
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .s04_silder_sub_title_wrapper,
+        .s04_silder_main_title_wrapper {
+            display: flex;
+            transition: all 0.4s linear;
+        }
+
+        .s04_slider_caption_wrapper {
+            height: 80px;
+            width: 220px;
+            background-color: rgba(255, 255, 255, 20%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+        }
+
+        .s04_caption_content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 5px;
+        }
+
+        .s04_buy_now_btn {
+            border: none;
+            padding: 3px 7px;
+            font-size: 7px;
+            font-weight: 500;
+            color: white;
+            background-color: #E1AD01;
+        }
+
+        .s04_buy_now_btn_wrapper {
+            transition: all 0.4s linear;
+        }
+
+        .s04_silder_sub_title {
+            font-size: 7px;
+            color: #E1AD01;
+        }
+
+        .s04_silder_main_title {
+            font-size: 10px;
+            color: white;
+        }
+
+
+
+        /* caption align class is here */
+
+        .s04_caption_align_left {
+            height: 80px;
+            width: 220px;
+            background-color: rgba(255, 255, 255, 20%);
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            transform: translate(-6%, -50%);
+        }
+
+        .s04_caption_align_middle {
+            height: 80px;
+            width: 220px;
+            background-color: rgba(255, 255, 255, 20%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .s04_caption_align_right {
+            height: 80px;
+            width: 220px;
+            background-color: rgba(255, 255, 255, 20%);
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            left: unset;
+            transform: translate(4%, -50%);
+        }
+
+        /* sub title animation */
+        .s04_btn_and_subtitle_animation.s04_caption_content .s04_silder_sub_title_wrapper {
+            transform: translate(-0%, 90%);
+            transition: all 0.4s linear;
+        }
+
+        /* buy now btn animation */
+        .s04_btn_and_subtitle_animation.s04_caption_content .s04_buy_now_btn_wrapper {
+            transform: translate(0%, -79%);
+            transition: all 0.4s linear;
+        }
+
+
+        /* slider controller */
+        .s04_indicator_left_wrapper {
+            height: 35px;
+            width: 35px;
+            background-color: #707070;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translate(0%, -50%);
+            cursor: pointer;
+            visibility: hidden;
+        }
+
+        .s04_indicator_right_wrapper {
+            height: 35px;
+            width: 35px;
+            background-color: #707070;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translate(0%, -50%);
+            cursor: pointer;
+            visibility: hidden;
+        }
+
+        .s04_caption_align_left.s04_slider_caption_wrapper .s04_caption_content {
+            align-items: start;
+        }
+
+        .s04_caption_align_right.s04_slider_caption_wrapper .s04_caption_content {
+            align-items: end;
+        }
+
+
+        /* slider counter number style */
+        .s04_counter_number_list {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 30%);
+        }
+
+        .s04_counter_number {
+            position: relative;
+        }
+
+        .s04_counter_number_divider::after {
+            content: "";
+            width: 1px;
+            background-color: rgba(255, 255, 255, 30%);
+            position: absolute;
+            height: 16px;
+            left: 123%;
+        }
+
+
+        .s04_active_counter_number {
+            color: white;
+        }
+
+        .s04_slider_number_counter_wrapper {
+            position: absolute;
+            left: 50%;
+            bottom: 20px;
+            transform: translate(-50%, 0%);
+        }
+
+        @media screen and (min-width:640px) {
+            .s04_slider_img_wrapper img {
+                height: 320px;
+            }
+
+            .s04_slider_caption_wrapper {
+                height: 150px;
+                width: 412px;
+            }
+
+            .s04_caption_content {
+                padding: 34px 10px;
+            }
+
+            .s04_buy_now_btn {
+                padding: 5px 10px;
+                font-size: 10px;
+                cursor: pointer;
+            }
+
+            .s04_silder_main_title_wrapper {
+                margin-top: 10px;
+            }
+
+            .s04_silder_sub_title {
+                font-size: 10px;
+            }
+
+            .s04_silder_main_title {
+                font-size: 17px;
+                color: white;
+            }
+
+            .s04_buy_now_btn_wrapper {
+                margin-top: 15px;
+
+            }
+
+            /* slider controller */
+            .s04_indicator_left_wrapper {
+                visibility: visible;
+            }
+
+            .s04_indicator_right_wrapper {
+                visibility: visible;
+            }
+        }
+
+        @media screen and (min-width:1025px) {
+            .s04_slider_img_wrapper img {
+                height: 620px;
+            }
+
+            .s04_slider_caption_wrapper {
+                height: 292px;
+                width: 795px;
+            }
+
+            .s04_caption_content {
+                padding: 80px 20px;
+            }
+
+            .s04_buy_now_btn {
+                padding: 9px 25px;
+                font-size: 14px;
+            }
+
+            .s04_silder_main_title_wrapper {
+                margin-top: 10px;
+            }
+
+            .s04_silder_sub_title {
+                font-size: 14px;
+            }
+
+            .s04_silder_main_title {
+                font-size: 35px;
+                font-weight: 500;
+            }
+
+            .s04_buy_now_btn_wrapper {
+                margin-top: 30px;
+            }
+
+            .s04_slider_number_counter_wrapper {
+                bottom: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="s04_slider_main_section s04_universal">
+
+        <div class="s04_slider_main_wrapper">
+
+            <!-- slider inner item -->
+            <div class="s04_slider_inner_item">
+
+                <!-- slider image -->
+                <div class="s04_slider_img_wrapper">
+                    <img src="./images/Slider 1.png" alt="">
+                </div>
+
+                <!-- slider caption wrapper -->
+                <div class="s04_slider_caption_wrapper s04_caption_align_middle">
+                    <div class="s04_caption_content">
+                        <div class="s04_silder_sub_title_wrapper">
+                            <span class="s04_silder_sub_title">Art Gallery</span>
+                        </div>
+                        <div class="s04_silder_main_title_wrapper">
+                            <span class="s04_silder_main_title">World's Most Demanding Mens Perfume.</span>
+                        </div>
+                        <div class="s04_buy_now_btn_wrapper">
+                            <button class="s04_buy_now_btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!-- slider inner item -->
+            <div class="s04_slider_inner_item">
+
+                <!-- slider image -->
+                <div class="s04_slider_img_wrapper">
+                    <img src="./images/Slider 1.png" alt="">
+                </div>
+
+                <!-- slider caption wrapper -->
+                <div class="s04_slider_caption_wrapper s04_caption_align_middle">
+                    <div class="s04_caption_content">
+                        <div class="s04_silder_sub_title_wrapper">
+                            <span class="s04_silder_sub_title">Art Gallery</span>
+                        </div>
+                        <div class="s04_silder_main_title_wrapper">
+                            <span class="s04_silder_main_title">World's Most Demanding Mens Perfume</span>
+                        </div>
+                        <div class="s04_buy_now_btn_wrapper">
+                            <button class="s04_buy_now_btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!-- slider inner item -->
+            <div class="s04_slider_inner_item">
+
+                <!-- slider image -->
+                <div class="s04_slider_img_wrapper">
+                    <img src="./images/Slider 1.png" alt="">
+                </div>
+
+                <!-- slider caption wrapper -->
+                <div class="s04_slider_caption_wrapper s04_caption_align_middle">
+                    <div class="s04_caption_content">
+                        <div class="s04_silder_sub_title_wrapper">
+                            <span class="s04_silder_sub_title">Art Gallery</span>
+                        </div>
+                        <div class="s04_silder_main_title_wrapper">
+                            <span class="s04_silder_main_title">World's Most Demanding Mens Perfume</span>
+                        </div>
+                        <div class="s04_buy_now_btn_wrapper">
+                            <button class="s04_buy_now_btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+        <!-- slider controller -->
+        <div class="s04_slider_controller_main_wrapper">
+            <div class="s04_indicator_left_wrapper">
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="5" height="9.759" viewBox="0 0 5 9.759">
+                        <path id="fi-rr-angle-small-left"
+                            d="M9.907,10.374a.7.7,0,0,1,0-.99l3.2-3.192a.7.7,0,1,0-.983-.99l-3.2,3.2a2.091,2.091,0,0,0,0,2.955l3.2,3.2a.7.7,0,1,0,.983-.99Z"
+                            transform="translate(-8.313 -4.999)" fill="#fff" />
+                    </svg>
+                </span>
+            </div>
+            <div class="s04_indicator_right_wrapper">
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="5" height="9.759" viewBox="0 0 5 9.759">
+                        <path id="fi-rr-angle-small-left"
+                            d="M11.718,10.374a.7.7,0,0,0,0-.99l-3.2-3.192A.7.7,0,0,1,9.5,5.2l3.2,3.2a2.091,2.091,0,0,1,0,2.955l-3.2,3.2a.7.7,0,1,1-.983-.99Z"
+                            transform="translate(-8.313 -4.999)" fill="#fff" />
+                    </svg>
+                </span>
+            </div>
+        </div>
+
+        <div class="s04_slider_number_counter_wrapper">
+            <div class="s04_counter_number_wrapper">
+                <ul class="s04_counter_number_list">
+                    <li class="s04_counter_number s04_counter_number_divider">01</li>
+
+                    <li class="s04_counter_number s04_active_counter_number s04_counter_number_divider">02</li>
+
+                    <li class="s04_counter_number">03</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        const s04_indicator_right_wrapper = document.querySelector(".s04_indicator_right_wrapper");
+        const s04_slider_main_wrapper = document.querySelector(".s04_slider_main_wrapper");
+        s04_indicator_right_wrapper.addEventListener("click", function () {
+            s04_slider_main_wrapper.classList.toggle("s04_active_change_slide");
+        });
+
+    </script>
+</body>
+
+</html>
